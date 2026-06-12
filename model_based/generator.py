@@ -8,22 +8,18 @@ import threading
 URL     = "http://calculator-lqr-service:5000/calculate"
 PAYLOAD = {"value": 20}
 
-TOTAL_REQUESTS     = 10000
-CONCURRENT_WORKERS = 500
+TOTAL_REQUESTS     = 8000
+CONCURRENT_WORKERS = 400
 
 log      = []
 log_lock = threading.Lock()
 t_start  = time.time()
-
 
 def send_request(i):
     try:
         t_req    = time.time()
         response = requests.post(URL, json=PAYLOAD, timeout=5)
         latency  = round(time.time() - t_req, 4)
-        print(
-            f"[{i}] Status: {response.status_code} | Response: {response.json()}"
-        )
         with log_lock:
             log.append(dict(
                 i=i,
@@ -34,12 +30,10 @@ def send_request(i):
     except Exception as e:
         pass
 
-
 with concurrent.futures.ThreadPoolExecutor(
     max_workers=CONCURRENT_WORKERS
     ) as executor:
         executor.map(send_request, range(TOTAL_REQUESTS))
-
 
 if log:
     log.sort(key=lambda r: r["i"])
