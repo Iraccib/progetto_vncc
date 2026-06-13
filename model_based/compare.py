@@ -44,7 +44,7 @@ fmt = lambda v, dec=1, unit="": f"{v:.{dec}f}{unit}" if v is not None else "N/A"
 # ===============================================================
 # GRAFICO 1
 # ===============================================================
-n_plots = 4 if df_load is not None else 3
+n_plots = 3 if df_load is not None else 3
 fig = plt.figure(figsize=(14, 5 * n_plots))
 fig.patch.set_facecolor('#FAFAFA')
 fig.suptitle('Analisi LQR Autoscaler', fontsize=15, fontweight='bold', y=0.99)
@@ -71,30 +71,37 @@ ax1.legend(fontsize=9); ax1.grid(**GRID_KW); ax1.set_ylim(bottom=0)
 
 # ===================== GRAFICO LATENZA ===========================================================================
 ax2 = fig.add_subplot(gs[1])
-ax2.plot(df_lqr['t'], df_lqr['l'], label='Latenza misurata',
-         color=COLOR_LQR, lw=2.2, alpha=0.85)
+
+ax2.plot(
+    df_lqr['t'], df_lqr['l'], label='Latenza misurata', color=COLOR_LQR, lw=2.2, alpha=0.85)
 ax2.axhline(0.4, color='green', lw=1.5, linestyle='--', label='L_ref = 0.4s')
-ax2.fill_between(df_lqr['t'], df_lqr['l'], 0.4,
-                 where=df_lqr['l'] > 0.4, alpha=0.2, color=COLOR_LQR, label='Violazione SLA')
+#ax2.fill_between(
+#    df_lqr['t'], df_lqr['l'], 0.4, where=df_lqr['l'] > 0.4, alpha=0.2, color=COLOR_LQR, label='Violazione SLA')
+
 ax2.set_xlabel('Tempo [s]'); ax2.set_ylabel('Latenza [s]')
 ax2.set_title('Latenza nel tempo', fontweight='bold')
 ax2.legend(fontsize=9); ax2.grid(**GRID_KW); ax2.set_ylim(bottom=0)
 
 # ===================== GRAFICO LATENZA CUMULATIVA =================================================================
+'''
+
 ax3 = fig.add_subplot(gs[2])
-if 'suffering' in df_lqr.columns and df_lqr['suffering'].sum() > 0:
-    ax3.fill_between(df_lqr['t'], df_lqr['suffering'], 0,
-                     alpha=0.25, color=COLOR_LQR)
-    ax3.plot(df_lqr['t'], df_lqr['suffering'],
-             color=COLOR_LQR, lw=2.2, label='z (sofferenza)')
+#if 'suffering' in df_lqr.columns and df_lqr['suffering'].sum() > 0:
+#    ax3.fill_between(df_lqr['t'], df_lqr['suffering'], 0,
+#                     alpha=0.25, color=COLOR_LQR)
+#    ax3.plot(df_lqr['t'], df_lqr['suffering'],
+#             color=COLOR_LQR, lw=2.2, label='z (sofferenza)')
 ax3.axhline(0, color='black', lw=0.8)
 ax3.set_xlabel('Tempo [s]'); ax3.set_ylabel('Sofferenza [req/s]')
 ax3.set_title('Sofferenza cumulativa nel tempo', fontweight='bold')
-ax3.legend(fontsize=9); ax3.grid(**GRID_KW); ax3.set_ylim(bottom=0)
+if ax3.get_legend_handles_labels()[0]:
+    ax3.legend(fontsize=9)
+ax3.grid(**GRID_KW); ax3.set_ylim(bottom=0)
+'''
 
 # ===================== GRAFICO TRAFFICO ===========================================================================
 if df_load is not None:
-    ax4 = fig.add_subplot(gs[3])
+    ax4 = fig.add_subplot(gs[2])
 
     # request rate: conta richieste per bin di 1s
     t_max  = df_load['t'].max()

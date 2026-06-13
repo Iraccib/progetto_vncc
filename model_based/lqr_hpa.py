@@ -120,9 +120,9 @@ class LQR:
 
         self.log.append(entry)
         tag = "▲" if u > x else ("▼" if u < x else "─")
-        print(
-            f"[k={k:3d} t={t:5.1f}s] l={l_k:.3f}s y={y_k} e={e_k:+.3f} "
-            f"x_ref={x_ref:5.1f}  x={x:3d}  u={u:3d}{tag}  z={z:+6.1f} u={self.u_not_sat:3d}{tag}")
+        #print(
+        #    f"[k={k:3d} t={t:5.1f}s] l={l_k:.3f}s y={y_k} e={e_k:+.3f} "
+        #    f"x_ref={x_ref:5.1f}  x={x:3d}  u={u:3d}{tag}  z={z:+6.1f} u={self.u_not_sat:3d}{tag}")
 
     def save_log(self) -> str:
         if not self.log:
@@ -140,8 +140,8 @@ class LQR:
     def print_log(self):
         print("=" * 64)
         print("  LQR AUTOSCALER ")
-        print(f"  Duration: {self.duration_s}s  Tc={self.Tc}s")
-        print(f"  BETA={self.BETA}          TARGET_LATENZA={self.LAT_REF}")
-        print(f"  Q={self.Q_WEIGHT}         R={self.R_WEIGHT}")
-        print(f"  min={self.MIN_REPLICAS}   max={self.MAX_REPLICAS}")
+        print(f"  Duration: {self.duration_s}s     Tc={self.Tc}s")
+        print(f"  BETA={self.BETA}           TARGET_LATENZA={self.LAT_REF}")
+        print(f"  Q={self.Q_WEIGHT}              R={self.R_WEIGHT}")
+        print(f"  min={self.MIN_REPLICAS}              max={self.MAX_REPLICAS}")
         print("=" * 64 + "\n")
